@@ -1,9 +1,11 @@
+### 584. Find Customer Referee
+
 ``` 
 SELECT * FROM Customer WHERE referee_id != 2;
 
 -- xử lý đúng:
 
-WHERE referee_id != 2 OR referee_id IS NULL
+WHERE referee_id != 2 OR referee_id IS NULL;
 
 ``` 
 - Dòng nào có referee_id = 2 → Bị loại 
