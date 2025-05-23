@@ -1,11 +1,11 @@
-`` ` 
+``` 
 SELECT * FROM Customer WHERE referee_id != 2;
 
-# xử lý đúng:
+-- xử lý đúng:
 
 WHERE referee_id != 2 OR referee_id IS NULL
 
-`` ` 
+``` 
 - Dòng nào có referee_id = 2 → Bị loại 
 
 - Dòng nào có referee_id = 1, 3, 99… → Được giữ 
