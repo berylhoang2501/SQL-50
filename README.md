@@ -35,3 +35,13 @@ Oracle: LENGTH
 Nhóm hàng bằng GROUP BY.
 
 Lọc nhóm bằng HAVING.
+
+### 1378. Replace Employee ID With The Unique Identifier
+
+```
+select empUni.unique_id, emp.name
+from Employees as emp
+LEFT JOIN EmployeeUNI as empUni on empUni.id = emp.id
+```
+
+**Note:** The LEFT JOIN keyword returns all records from the left table (Customers), even if there are no matches in the right table (Orders).
