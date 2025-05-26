@@ -42,6 +42,11 @@ Lọc nhóm bằng HAVING.
 select empUni.unique_id, emp.name
 from Employees as emp
 LEFT JOIN EmployeeUNI as empUni on empUni.id = emp.id
+
+SELECT column_name(s)
+FROM table1
+INNER JOIN table2
+ON table1.column_name = table2.column_name;
 ```
 
 **Note:** The LEFT JOIN keyword returns all records from the left table (Customers), even if there are no matches in the right table (Orders).
