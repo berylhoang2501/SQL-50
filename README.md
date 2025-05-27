@@ -61,3 +61,9 @@ on Visits.visit_id = Transactions.visit_id
 where Transactions.transaction_id is null
 group by Visits.customer_id;
 ```
+<img width="369" alt="Ảnh màn hình 2025-05-27 lúc 11 11 01" src="https://github.com/user-attachments/assets/fb568a04-f606-4d9b-812c-a29b72d86c8d" />
+
+
+- Nếu một visit_id trong Visits không có bản ghi tương ứng trong Transactions, các cột từ Transactions (như transaction_id) sẽ trả về giá trị NULL.)
+
+- GROUP BY Visits.customer_id chia các hàng thành các nhóm, mỗi nhóm tương ứng với một customer_id duy nhất. Sau đó, COUNT(Visits.visit_id) được tính cho từng nhóm, cho ra số lượt ghé thăm không có giao dịch của mỗi khách hàng.
