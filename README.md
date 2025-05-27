@@ -50,3 +50,14 @@ ON table1.column_name = table2.column_name;
 ```
 
 **Note:** The LEFT JOIN keyword returns all records from the left table (Customers), even if there are no matches in the right table (Orders).
+
+### 1581. Customer Who Visited but Did Not Make Any Transactions
+
+```
+select Visits.customer_id, count(Visits.visit_id) as count_no_trans
+from Visits
+left join Transactions
+on Visits.visit_id = Transactions.visit_id
+where Transactions.transaction_id is null
+group by Visits.customer_id;
+```
