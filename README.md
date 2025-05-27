@@ -67,3 +67,19 @@ group by Visits.customer_id;
 - Nếu một visit_id trong Visits không có bản ghi tương ứng trong Transactions, các cột từ Transactions (như transaction_id) sẽ trả về giá trị NULL.)
 
 - GROUP BY Visits.customer_id chia các hàng thành các nhóm, mỗi nhóm tương ứng với một customer_id duy nhất. Sau đó, COUNT(Visits.visit_id) được tính cho từng nhóm, cho ra số lượt ghé thăm không có giao dịch của mỗi khách hàng.
+
+### 197. Rising Temperature
+
+```
+select w1.id 
+from Weather w1
+join Weather w2 
+on w1.recordDate = date_add(w2.recordDate, interval 1 day)
+where w1.temperature > w2.temperature;
+```
+
+- Để so sánh nhiệt độ của một ngày với ngày trước đó, ta cần so sánh hai hàng trong cùng bảng Weather.
+
+- Self-join được sử dụng bằng cách kết nối bảng Weather với chính nó, tạo ra hai bản sao (bí danh w1 và w2): w1: Đại diện cho ngày hiện tại (ngày cần kiểm tra nhiệt độ), w2: Đại diện cho ngày trước đó (ngày để so sánh).
+
+- DATE_ADD(w2.recordDate, INTERVAL 1 DAY): Hàm này lấy ngày trong w2.recordDate và thêm 1 ngày, trả về ngày kế tiếp.
