@@ -83,3 +83,18 @@ where w1.temperature > w2.temperature;
 - Self-join được sử dụng bằng cách kết nối bảng Weather với chính nó, tạo ra hai bản sao (bí danh w1 và w2): w1: Đại diện cho ngày hiện tại (ngày cần kiểm tra nhiệt độ), w2: Đại diện cho ngày trước đó (ngày để so sánh).
 
 - DATE_ADD(w2.recordDate, INTERVAL 1 DAY): Hàm này lấy ngày trong w2.recordDate và thêm 1 ngày, trả về ngày kế tiếp.
+
+### 1661. Average Time of Process per Machine
+
+```
+select a1.machine_id, round(avg(a2.timestamp - a1.timestamp),3 ) as processing_time
+from Activity a1
+join Activity a2
+on a1.machine_id = a2.machine_id 
+and a1.process_id = a2.process_id
+and a1.activity_type = 'start' and a2.activity_type = 'end'
+group by a1.machine_id
+```
+
+- hai điều kiện a1.process_id = a2.process_id và a1.activity_type = 'start' AND a2.activity_type = 'end' được coi là điều kiện ràng buộc để đảm bảo truy vấn hoạt động chính xác theo yêu cầu bài toán. 
+
