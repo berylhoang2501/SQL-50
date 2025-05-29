@@ -126,3 +126,5 @@ Nếu COUNT(e.student_id) trả về một giá trị (số lần thi, ví dụ 
 Nếu COUNT(e.student_id) trả về NULL (hoặc không có bản ghi nào), thì lấy giá trị 0.
 
 - Điều này đảm bảo rằng khi một học sinh không tham gia kỳ thi nào cho một môn học, kết quả vẫn trả về 0 thay vì NULL.
+
+- Nếu xài count không và không dùng COALESCE thì code chạy vẫn đúng
