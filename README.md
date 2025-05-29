@@ -96,5 +96,33 @@ and a1.activity_type = 'start' and a2.activity_type = 'end'
 group by a1.machine_id
 ```
 
-- hai điều kiện a1.process_id = a2.process_id và a1.activity_type = 'start' AND a2.activity_type = 'end' được coi là điều kiện ràng buộc để đảm bảo truy vấn hoạt động chính xác theo yêu cầu bài toán. 
+- hai điều kiện a1.process_id = a2.process_id và a1.activity_type = 'start' AND a2.activity_type = 'end' được coi là điều kiện ràng buộc để đảm bảo truy vấn hoạt động chính xác theo yêu cầu bài toán.
 
+### 1280. Students and Examinations
+
+```
+select 
+    Students.student_id, 
+    Students.student_name, 
+    Subjects.subject_name, 
+    COALESCE(count(Examinations.student_id), 0) as attended_exams
+from Students
+cross join Subjects
+left join Examinations
+on Examinations.subject_name = Subjects.subject_name
+and Students.student_id = Examinations.student_id
+group by Students.student_id, Students.student_name, Subjects.subject_name 
+order by Students.student_id, Subjects.subject_name
+```
+
+- Trong SQL, khi sử dụng một hàm tổng hợp như COUNT (ở đây là COUNT(e.student_id)), tất cả các cột trong SELECT không sử dụng hàm tổng hợp phải được liệt kê trong GROUP BY.
+
+- Hàm COALESCE trong SQL nhận một danh sách các biểu thức và trả về giá trị không NULL đầu tiên trong danh sách.
+
+- Ở đây, COALESCE(COUNT(e.student_id), 0) có nghĩa là:
+
+Nếu COUNT(e.student_id) trả về một giá trị (số lần thi, ví dụ 1, 2, 3,...), thì lấy giá trị đó.
+
+Nếu COUNT(e.student_id) trả về NULL (hoặc không có bản ghi nào), thì lấy giá trị 0.
+
+- Điều này đảm bảo rằng khi một học sinh không tham gia kỳ thi nào cho một môn học, kết quả vẫn trả về 0 thay vì NULL.
