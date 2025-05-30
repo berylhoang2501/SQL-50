@@ -128,3 +128,24 @@ Nếu COUNT(e.student_id) trả về NULL (hoặc không có bản ghi nào), th
 - Điều này đảm bảo rằng khi một học sinh không tham gia kỳ thi nào cho một môn học, kết quả vẫn trả về 0 thay vì NULL.
 
 - Nếu xài count không và không dùng COALESCE thì code chạy vẫn đúng
+
+
+### 570. Managers with at Least 5 Direct Reports
+
+```
+select e1.name
+from Employee e1
+join Employee e2
+on e1.id = e2.managerId 
+group by e1.id, e2.managerId 
+having count(e2.managerId) >= 5
+
+select e1.name
+from Employee e1, Employee e2
+where e1.id = e2.managerId 
+group by e1.id, e2.managerId 
+having count(e2.managerId) >= 5
+```
+
+- HAVING COUNT(e2.id) >= 5 lọc các nhóm (mỗi nhóm tương ứng với một quản lý) mà số lượng bản ghi trong nhóm (số nhân viên báo cáo) lớn hơn hoặc bằng 5.
+Thời điểm thực hiện: Sau khi nhóm các bản ghi (sau GROUP BY).
