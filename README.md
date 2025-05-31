@@ -159,8 +159,20 @@ left join Confirmations C
 on S.user_id = C.user_id
 group by S.user_id
 ```
-
 - c.action = 'confirmed': Trả về 1 (true) nếu action = 'confirmed', 0 (false) nếu action = 'timeout' hoặc NULL (khi không có bản ghi).
 
 - AVG(c.action = 'confirmed'): Tính trung bình các giá trị 1 và 0, tương đương với (Số tin nhắn confirmed) / (Tổng số tin nhắn). Nếu không có tin nhắn (c.action là NULL), AVG trả về 0.
 
+### 620. Not Boring Movies
+
+```
+select id, movie, description, rating 
+from Cinema
+where id%2 <> 0 and description <> 'boring'
+order by rating desc;
+
+```
+
+- <> là ký hiệu chung để biểu hiện "khác" trong sql
+
+- Ngoài ra có thể dùng !=. not in, not like
