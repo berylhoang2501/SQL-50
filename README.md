@@ -149,3 +149,18 @@ having count(e2.managerId) >= 5
 
 - HAVING COUNT(e2.id) >= 5 lọc các nhóm (mỗi nhóm tương ứng với một quản lý) mà số lượng bản ghi trong nhóm (số nhân viên báo cáo) lớn hơn hoặc bằng 5.
 Thời điểm thực hiện: Sau khi nhóm các bản ghi (sau GROUP BY).
+
+### 1934. Confirmation Rate
+
+```
+select S.user_id , COALESCE(round(avg(C.action = 'confirmed'), 2),0) as confirmation_rate 
+from Signups S
+left join Confirmations C
+on S.user_id = C.user_id
+group by S.user_id
+```
+
+- c.action = 'confirmed': Trả về 1 (true) nếu action = 'confirmed', 0 (false) nếu action = 'timeout' hoặc NULL (khi không có bản ghi).
+
+- AVG(c.action = 'confirmed'): Tính trung bình các giá trị 1 và 0, tương đương với (Số tin nhắn confirmed) / (Tổng số tin nhắn). Nếu không có tin nhắn (c.action là NULL), AVG trả về 0.
+
