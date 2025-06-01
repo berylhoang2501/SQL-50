@@ -176,3 +176,18 @@ order by rating desc;
 - <> là ký hiệu chung để biểu hiện "khác" trong sql
 
 - Ngoài ra có thể dùng !=. not in, not like
+
+### 1251. Average Selling Price
+
+```
+select P.product_id, ifnull(round(sum(US.units * P.price) / sum(US.units),2),0) average_price
+from Prices P
+left join UnitsSold US
+on P.product_id = US.product_id
+and US.purchase_date  between P.start_date and P.end_date 
+group by P.product_id
+```
+
+- Theo yêu cầu của bài toán, nếu một sản phẩm không có đơn vị bán, giá trung bình phải được trả về là 0. Để xử lý trường hợp này, chúng ta sử dụng hàm IFNULL để thay thế giá trị NULL bằng 0.
+
+- Hàm IFNULL là một hàm được sử dụng để xử lý các giá trị NULL. Cú pháp của nó là: IFNULL(biểu_thức, giá_trị_thay_thế)
