@@ -22,19 +22,19 @@ select tweet_id from Tweets where LENGTH(content) > 15
 
 - Nếu cần kiểm tra độ dài chuỗi (số ký tự), dùng LENGTH (hoặc LEN trong SQL Server).
 
-MySQL/PostgreSQL: LENGTH
+    - MySQL/PostgreSQL: LENGTH
 
-SQL Server: LEN
+    - SQL Server: LEN
 
-Oracle: LENGTH
+    - Oracle: LENGTH
 
 - COUNT là hàm tổng hợp (aggregate function): Nó hoạt động trên một nhóm hàng và trả về một giá trị duy nhất (số lượng hàng hoặc giá trị không null). Trong khi đó, WHERE chỉ áp dụng điều kiện cho từng hàng riêng lẻ, nên không thể dùng COUNT trực tiếp trong WHERE.
 
 - Để sử dụng COUNT cho điều kiện, cần:
 
-Nhóm hàng bằng GROUP BY.
+    - Nhóm hàng bằng GROUP BY.
 
-Lọc nhóm bằng HAVING.
+    - Lọc nhóm bằng HAVING.
 
 ### 1378. Replace Employee ID With The Unique Identifier
 
@@ -121,9 +121,9 @@ order by Students.student_id, Subjects.subject_name
 
 - Ở đây, COALESCE(COUNT(e.student_id), 0) có nghĩa là:
 
-Nếu COUNT(e.student_id) trả về một giá trị (số lần thi, ví dụ 1, 2, 3,...), thì lấy giá trị đó.
+    - Nếu COUNT(e.student_id) trả về một giá trị (số lần thi, ví dụ 1, 2, 3,...), thì lấy giá trị đó.
 
-Nếu COUNT(e.student_id) trả về NULL (hoặc không có bản ghi nào), thì lấy giá trị 0.
+    - Nếu COUNT(e.student_id) trả về NULL (hoặc không có bản ghi nào), thì lấy giá trị 0.
 
 - Điều này đảm bảo rằng khi một học sinh không tham gia kỳ thi nào cho một môn học, kết quả vẫn trả về 0 thay vì NULL.
 
@@ -191,3 +191,15 @@ group by P.product_id
 - Theo yêu cầu của bài toán, nếu một sản phẩm không có đơn vị bán, giá trung bình phải được trả về là 0. Để xử lý trường hợp này, chúng ta sử dụng hàm IFNULL để thay thế giá trị NULL bằng 0.
 
 - Hàm IFNULL là một hàm được sử dụng để xử lý các giá trị NULL. Cú pháp của nó là: IFNULL(biểu_thức, giá_trị_thay_thế)
+
+### 1633. Percentage of Users Attended a Contest
+
+```
+select R.contest_id, 
+ROUND(COUNT(DISTINCT R.user_id) * 100.0 / (SELECT COUNT(*) FROM Users), 2) AS percentage
+from Users U
+inner join Register R 
+on U.user_id = R.user_id 
+group by R.contest_id
+order by percentage desc, R.contest_id asc
+```
