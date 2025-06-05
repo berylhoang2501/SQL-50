@@ -203,3 +203,25 @@ on U.user_id = R.user_id
 group by R.contest_id
 order by percentage desc, R.contest_id asc
 ```
+
+###  1193. Monthly Transactions I
+
+```
+-- select concat(year(trans_date), "-", month(trans_date)) as month ,
+-- CONCAT(YEAR(trans_date), "-", LPAD(MONTH(trans_date), 2, '0')) AS month,
+
+select DATE_FORMAT(trans_date, '%Y-%m') AS month,
+country, count(state) as trans_count, sum((state = 'approved') * state) as approved_count,
+sum(amount) as trans_total_amount, sum((state = 'approved') * amount) as approved_total_amount
+from Transactions
+group by month, country
+```
+
+- Hàm DATE_FORMAT(trans_date, định_dạng) cho phép định dạng trực tiếp ngày tháng theo mẫu mong muốn. Để lấy YYYY-MM (năm-tháng với tháng luôn có 2 chữ số), có thể dùng định dạng %Y-%m.
+
+- Hàm LPAD(chuỗi, độ_dài, ký_tự_thêm) thêm ký tự (thường là 0) vào bên trái chuỗi cho đến khi đạt độ dài mong muốn.
+
+- LPAD(MONTH(trans_date), 2, '0'):
+    - Đảm bảo tháng có độ dài 2 chữ số.
+    - Nếu tháng là 1, LPAD(1, 2, '0') trả về 01.
+    - Nếu tháng là 10, LPAD(10, 2, '0') vẫn trả về 10 (vì đã đủ 2 chữ số).
