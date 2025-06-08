@@ -225,3 +225,20 @@ group by month, country
     - Đảm bảo tháng có độ dài 2 chữ số.
     - Nếu tháng là 1, LPAD(1, 2, '0') trả về 01.
     - Nếu tháng là 10, LPAD(10, 2, '0') vẫn trả về 10 (vì đã đủ 2 chữ số).
+ 
+### 1174. Immediate Food Delivery II
+
+```
+select round(avg(order_date = customer_pref_delivery_date)*100,2) as immediate_percentage 
+from Delivery
+where (customer_id, order_date) in 
+(
+select customer_id, min(order_date)
+from Delivery
+group by customer_id)
+```
+
+- Lọc ra các đơn hàng đầu tiêng rồi mới kiểm tra điều kiện giao 
+- Biểu thức: order_date = customer_pref_delivery_date trả về TRUE (1) nếu đúng và FALSE (0) nếu sai
+- Tính giá trị trung bình của các giá trị 1 và 0 từ bước trước. Trung bình này chính là tỷ lệ đơn hàng giao ngay.
+    - [0, 1, 0, 1] -> 0 + 1 + 0 + 1 = 2 -> số lượng hàng là 4 vậy 2/4 = 0.5 (tức 50% đơn hàng là giao ngay).
