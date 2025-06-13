@@ -242,3 +242,30 @@ group by customer_id)
 - Biểu thức: order_date = customer_pref_delivery_date trả về TRUE (1) nếu đúng và FALSE (0) nếu sai
 - Tính giá trị trung bình của các giá trị 1 và 0 từ bước trước. Trung bình này chính là tỷ lệ đơn hàng giao ngay.
     - [0, 1, 0, 1] -> 0 + 1 + 0 + 1 = 2 -> số lượng hàng là 4 vậy 2/4 = 0.5 (tức 50% đơn hàng là giao ngay).
+
+
+### 550. Game Play Analysis IV
+
+```
+SELECT 
+    ROUND(
+        COUNT(DISTINCT CASE 
+            WHEN a2.event_date = DATE_ADD(a1.first_login, INTERVAL 1 DAY) 
+            THEN a1.player_id 
+            END) / COUNT(DISTINCT a1.player_id), 
+        2
+    ) AS fraction
+FROM (
+    SELECT player_id, MIN(event_date) AS first_login
+    FROM Activity
+    GROUP BY player_id
+) a1
+LEFT JOIN Activity a2 
+    ON a1.player_id = a2.player_id 
+    AND a2.event_date = DATE_ADD(a1.first_login, INTERVAL 1 DAY);
+```
+
+- CASE Statement: Kiểm tra điều kiện: a2.event_date = DATE_ADD(a1.first_login, INTERVAL 1 DAY).
+    - Nếu đúng (tức là người chơi có đăng nhập vào ngày liền sau first_login), trả về a1.player_id.
+    - Nếu sai (hoặc a2.event_date là NULL do không có bản ghi khớp), trả về NULL.
+
