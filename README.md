@@ -269,3 +269,18 @@ LEFT JOIN Activity a2
     - Nếu đúng (tức là người chơi có đăng nhập vào ngày liền sau first_login), trả về a1.player_id.
     - Nếu sai (hoặc a2.event_date là NULL do không có bản ghi khớp), trả về NULL.
 
+
+### 619. Biggest Single Number
+
+```
+  select max(num) as num
+  from (
+            SELECT num
+            FROM MyNumbers
+            GROUP BY num
+            HAVING COUNT(*) = 1
+        ) as bangtam
+```
+- COUNT(num) không dùng được trong WHERE
+
+- COUNT() là hàm tổng hợp → chỉ dùng sau khi gom nhóm (GROUP BY) và lọc bằng HAVING, hoặc phải đặt trong subquery/window.
