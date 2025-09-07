@@ -284,3 +284,21 @@ LEFT JOIN Activity a2
 - COUNT(num) không dùng được trong WHERE
 
 - COUNT() là hàm tổng hợp → chỉ dùng sau khi gom nhóm (GROUP BY) và lọc bằng HAVING, hoặc phải đặt trong subquery/window.
+
+
+### 1070. Product Sales Analysis III
+
+```
+
+select product_id, year as first_year, quantity, price
+from Sales 
+where (product_id, year) in 
+(
+    select product_id, min(year)
+    from sales
+    group by product_id
+)
+
+```
+
+
