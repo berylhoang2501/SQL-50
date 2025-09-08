@@ -301,4 +301,17 @@ where (product_id, year) in
 
 ```
 
+### 1045. Customers Who Bought All Products
 
+```
+select C.customer_id
+from Customer C join Product P
+where C.product_key = P.product_key
+group by C.customer_id
+HAVING COUNT(DISTINCT c.product_key) = (SELECT COUNT(*) FROM Product)
+
+```
+
+- SELECT COUNT(*) FROM Product (=2) -> Đây là số mốc để so sánh: ai mua đủ 2 loại sản phẩm thì đạt.
+- COUNT(DISTINCT c.product_key) = số loại sản phẩm mỗi khách đã mua.
+- Điều kiện HAVING ... = ... chính là chốt lọc “mua đủ”.
