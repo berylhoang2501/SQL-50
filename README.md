@@ -315,3 +315,19 @@ HAVING COUNT(DISTINCT c.product_key) = (SELECT COUNT(*) FROM Product)
 - SELECT COUNT(*) FROM Product (=2) -> Đây là số mốc để so sánh: ai mua đủ 2 loại sản phẩm thì đạt.
 - COUNT(DISTINCT c.product_key) = số loại sản phẩm mỗi khách đã mua.
 - Điều kiện HAVING ... = ... chính là chốt lọc “mua đủ”.
+
+### 1731. The Number of Employees Which Report to Each Employee
+
+WITH agg AS (
+  SELECT r.reports_to AS employee_id,
+         COUNT(*) AS reports_count,
+         ROUND(AVG(r.age)) AS average_age
+  FROM Employees r
+  WHERE r.reports_to IS NOT NULL
+  GROUP BY r.reports_to
+)
+SELECT a.employee_id, m.name, a.reports_count, a.average_age
+FROM agg a
+JOIN Employees m ON m.employee_id = a.employee_id
+ORDER BY a.employee_id;
+
