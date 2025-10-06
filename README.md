@@ -377,3 +377,15 @@ Cần lũy kế/trượt → SUM()/AVG() OVER (...) + frame (ROWS/RANGE).
 **- 4. Lọc/giữ hàng cần → lọc sau khi tính window**
 
 Ngoài ra, hàm window không được dùng trong WHERE theo chuẩn SQL. Vì vậy nên phải bọc subquery/CTE (để row_num đã được tính xong), rồi lọc ở ngoài
+
+## Window function khác với CTE chỗ nào
+**CTE**
+
+- một “bảng tạm đặt tên” được tạo ra từ một subquery để tái dùng, làm rõ logic, hoặc đệ quy. Không tự tạo giá trị mới ngoài những gì query con trả về.
+- chia bài toán thành bước; có thể nối nhiều CTE; có thể đệ quy (WITH RECURSIVE).
+- WITH cte AS (SELECT ...) SELECT ... FROM cte.
+  
+**Window function**
+- hàm (ROW_NUMBER, RANK, SUM() OVER, AVG() OVER, LAG/LEAD, …) tính toán dựa trên các dòng liên quan (partition/ordering) mà không gộp/giảm số dòng.
+- làm thống kê theo nhóm, xếp hạng, so sánh giữa dòng hiện tại và dòng trước/sau, rolling sum/avg, v.v.
+- SUM(col) OVER (PARTITION BY ... ORDER BY ... ROWS BETWEEN ...).
