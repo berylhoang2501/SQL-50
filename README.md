@@ -318,6 +318,7 @@ HAVING COUNT(DISTINCT c.product_key) = (SELECT COUNT(*) FROM Product)
 
 ### 1731. The Number of Employees Which Report to Each Employee
 
+```
 WITH agg AS (
   SELECT r.reports_to AS employee_id,
          COUNT(*) AS reports_count,
@@ -330,4 +331,49 @@ SELECT a.employee_id, m.name, a.reports_count, a.average_age
 FROM agg a
 JOIN Employees m ON m.employee_id = a.employee_id
 ORDER BY a.employee_id;
+```
 
+### 1789. Primary Department for Each Employee
+
+```
+SELECT employee_id, department_id
+FROM
+(
+    SELECT employee_id,
+    department_id,
+    ROW_NUMBER() OVER
+    (
+        PARTITION BY employee_id 
+        ORDER BY CASE WHEN primary_flag = 'Y' THEN 1 ELSE 0 END DESC
+    ) AS row_num
+    FROM Employee
+) AS employee_primary_rank
+WHERE row_num = 1
+```
+
+## Tư duy với window function = nghĩ theo 4 bước cố định
+- 1. Xác định “bài toán theo nhóm” → PARTITION BY
+
+Hỏi: mỗi kết quả được quyết định trong phạm vi của những hàng nào?
+
+Trả lời = khóa nhóm (vd: theo employee_id, theo order_id, theo account_id…)
+
+- 2. Xác định “ưu tiên/xếp hạng trong nhóm” → ORDER BY (trong window)
+
+Hỏi: trong nhóm đó, tiêu chí chọn hàng “đúng” là gì?
+
+Mã hoá bằng ORDER BY, thường kèm CASE WHEN để ép thứ tự (vd: Y trước N, mới nhất trước cũ…).
+
+- 3. Chọn “loại thước đo” → hàm cửa sổ phù hợp
+
+Cần chọn 1 hàng tốt nhất → ROW_NUMBER() (loại bỏ ties).
+
+Có thể có đồng hạng → RANK()/DENSE_RANK().
+
+Cần so sánh hàng kề → LAG()/LEAD().
+
+Cần lũy kế/trượt → SUM()/AVG() OVER (...) + frame (ROWS/RANGE).
+
+- 4. Lọc/giữ hàng cần → lọc sau khi tính window
+
+Ngoài ra, hàm window không được dùng trong WHERE theo chuẩn SQL. Vì vậy nên phải bọc subquery/CTE (để row_num đã được tính xong), rồi lọc ở ngoài
