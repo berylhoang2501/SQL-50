@@ -352,19 +352,19 @@ WHERE row_num = 1
 ```
 
 ## Tư duy với window function = nghĩ theo 4 bước cố định
-- 1. Xác định “bài toán theo nhóm” → PARTITION BY
+**- 1. Xác định “bài toán theo nhóm” → PARTITION BY**
 
 Hỏi: mỗi kết quả được quyết định trong phạm vi của những hàng nào?
 
 Trả lời = khóa nhóm (vd: theo employee_id, theo order_id, theo account_id…)
 
-- 2. Xác định “ưu tiên/xếp hạng trong nhóm” → ORDER BY (trong window)
+**- 2. Xác định “ưu tiên/xếp hạng trong nhóm” → ORDER BY (trong window)**
 
 Hỏi: trong nhóm đó, tiêu chí chọn hàng “đúng” là gì?
 
 Mã hoá bằng ORDER BY, thường kèm CASE WHEN để ép thứ tự (vd: Y trước N, mới nhất trước cũ…).
 
-- 3. Chọn “loại thước đo” → hàm cửa sổ phù hợp
+**- 3. Chọn “loại thước đo” → hàm cửa sổ phù hợp**
 
 Cần chọn 1 hàng tốt nhất → ROW_NUMBER() (loại bỏ ties).
 
@@ -374,6 +374,6 @@ Cần so sánh hàng kề → LAG()/LEAD().
 
 Cần lũy kế/trượt → SUM()/AVG() OVER (...) + frame (ROWS/RANGE).
 
-- 4. Lọc/giữ hàng cần → lọc sau khi tính window
+**- 4. Lọc/giữ hàng cần → lọc sau khi tính window**
 
 Ngoài ra, hàm window không được dùng trong WHERE theo chuẩn SQL. Vì vậy nên phải bọc subquery/CTE (để row_num đã được tính xong), rồi lọc ở ngoài
