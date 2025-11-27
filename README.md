@@ -394,10 +394,11 @@ Ngoài ra, hàm window không được dùng trong WHERE theo chuẩn SQL. Vì v
 
 ### 610. Triangle Judgement
 
+```
 select x, y, z, 
         case 
             when x + y > z and y + z > x and x + z > y then 'Yes'
             else 'No'
         end as triangle
 from Triangle;
-
+```
