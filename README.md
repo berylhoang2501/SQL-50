@@ -389,3 +389,15 @@ Ngoài ra, hàm window không được dùng trong WHERE theo chuẩn SQL. Vì v
 - hàm (ROW_NUMBER, RANK, SUM() OVER, AVG() OVER, LAG/LEAD, …) tính toán dựa trên các dòng liên quan (partition/ordering) mà không gộp/giảm số dòng.
 - làm thống kê theo nhóm, xếp hạng, so sánh giữa dòng hiện tại và dòng trước/sau, rolling sum/avg, v.v.
 - SUM(col) OVER (PARTITION BY ... ORDER BY ... ROWS BETWEEN ...).
+
+
+
+### 610. Triangle Judgement
+
+select x, y, z, 
+        case 
+            when x + y > z and y + z > x and x + z > y then 'Yes'
+            else 'No'
+        end as triangle
+from Triangle;
+
