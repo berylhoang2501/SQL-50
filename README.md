@@ -402,3 +402,16 @@ select x, y, z,
         end as triangle
 from Triangle;
 ```
+
+### 180. Consecutive Numbers
+
+```
+select distinct num as ConsecutiveNums 
+from ( 
+    SELECT num, 
+    LAG(num,1) OVER (ORDER BY id) AS gtri_trc_1, 
+    LAG(num,2) OVER (ORDER BY id) AS gtri_trc_2 
+    FROM Logs 
+    ) bang_tam 
+where num = gtri_trc_1 and num = gtri_trc_2
+```
