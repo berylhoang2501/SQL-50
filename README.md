@@ -415,3 +415,27 @@ from (
     ) bang_tam 
 where num = gtri_trc_1 and num = gtri_trc_2
 ```
+### 1164. Product Price at a Given Date
+
+```
+WITH latest_price AS (
+    SELECT 
+        product_id, 
+        new_price,
+        ROW_NUMBER() OVER (
+            PARTITION BY product_id 
+            ORDER BY change_date DESC
+        ) AS bang_gia_moi_nhat
+    FROM Products
+    WHERE change_date <= '2019-08-16'
+)
+
+SELECT 
+    p1.product_id,
+       COALESCE(latest_price.new_price, 10) AS price
+FROM (SELECT DISTINCT product_id FROM Products) p1
+LEFT JOIN latest_price 
+    ON p1.product_id = latest_price.product_id 
+   AND latest_price.bang_gia_moi_nhat = 1
+ORDER BY p1.product_id;
+```
