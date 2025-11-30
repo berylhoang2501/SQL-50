@@ -439,3 +439,16 @@ LEFT JOIN latest_price
    AND latest_price.bang_gia_moi_nhat = 1
 ORDER BY p1.product_id;
 ```
+
+### 1204. Last Person to Fit in the Bus
+```
+SELECT person_name
+FROM (
+SELECT person_name,
+    SUM(weight) OVER (ORDER BY turn) AS total_weight
+FROM Queue
+) AS ranked
+WHERE total_weight <= 1000
+ORDER BY total_weight desc
+LIMIT 1
+```
