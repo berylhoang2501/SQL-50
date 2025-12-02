@@ -474,3 +474,21 @@ SELECT
     SUM(income > 50000)
 FROM Accounts;
 ```
+
+
+### 626. Exchange Seats
+```
+SELECT 
+    id,
+    CASE 
+        WHEN id % 2 = 0 THEN 
+            (SELECT student FROM Seat WHERE id = s1.id - 1)        -- ghế chẵn: lấy người ghế trước
+        WHEN id % 2 = 1 THEN 
+            COALESCE(
+                (SELECT student FROM Seat WHERE id = s1.id + 1),   -- ghế lẻ: cố lấy ghế sau
+                s1.student                                         -- nếu không có → giữ nguyên
+            )
+    END AS student
+FROM Seat s1
+ORDER BY id;
+```
