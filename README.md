@@ -492,3 +492,32 @@ SELECT
 FROM Seat s1
 ORDER BY id;
 ```
+
+### 341. Movie Rating
+
+Yêu cầu trả về 2 dòng trong 1 cột results:
+
+Tên người dùng đã rating nhiều phim nhất
+→ Nếu bằng nhau → chọn tên nhỏ nhất theo thứ tự từ điển (A trước B)
+Tên bộ phim có điểm trung bình cao nhất trong tháng 02/2020
+→ Nếu bằng nhau → chọn tên phim nhỏ nhất theo thứ tự từ điển
+
+```
+(SELECT u.name AS results
+ FROM MovieRating mr
+ JOIN Users u ON mr.user_id = u.user_id
+ GROUP BY u.user_id, u.name
+ ORDER BY COUNT(*) DESC, u.name ASC
+ LIMIT 1)
+
+UNION ALL
+
+(SELECT m.title AS results
+ FROM MovieRating mr
+ JOIN Movies m ON mr.movie_id = m.movie_id
+ WHERE mr.created_at >= '2020-02-01'
+   AND mr.created_at < '2020-03-01'
+ GROUP BY m.movie_id, m.title
+ ORDER BY AVG(mr.rating) DESC, m.title ASC
+ LIMIT 1);
+```
