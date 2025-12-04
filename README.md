@@ -521,3 +521,43 @@ UNION ALL
  ORDER BY AVG(mr.rating) DESC, m.title ASC
  LIMIT 1);
 ```
+
+### 1321. Restaurant Growth
+
+```
+-- Bước 1: Gộp tổng tiền mỗi ngày trước (bắt buộc!)
+WITH daily AS (
+    SELECT visited_on, SUM(amount) AS day_amount
+    FROM Customer
+    GROUP BY visited_on
+)
+
+-- Bước 2: Với mỗi ngày, tính tổng 7 ngày gần nhất bằng correlated subquery
+SELECT 
+    d1.visited_on,
+    
+    -- Tổng tiền trong 7 ngày (từ 6 ngày trước đến hôm nay)
+    (
+        SELECT SUM(d2.day_amount)
+        FROM daily d2
+        WHERE d2.visited_on BETWEEN DATE_SUB(d1.visited_on, INTERVAL 6 DAY) AND d1.visited_on
+    ) AS amount,
+    
+    -- Trung bình 7 ngày, làm tròn 2 chữ số
+    ROUND(
+        (
+            SELECT SUM(d2.day_amount)
+            FROM daily d2
+            WHERE d2.visited_on BETWEEN DATE_SUB(d1.visited_on, INTERVAL 6 DAY) AND d1.visited_on
+        ) / 7.0, 2
+    ) AS average_amount
+
+FROM daily d1
+
+-- Chỉ lấy những ngày đã đủ 7 ngày dữ liệu
+WHERE d1.visited_on >= (
+    SELECT MIN(visited_on) + INTERVAL 6 DAY FROM daily
+)
+
+ORDER BY d1.visited_on;
+```
