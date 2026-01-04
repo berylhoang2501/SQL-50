@@ -587,11 +587,11 @@ SELECT id, count(*) AS num
 FROM 
 (
     SELECT requester_id AS id
-    FROM RequestAccepted -- mỗi dòng là “người đi kết bạn”
-    UNION ALL -- sẽ giữ lại luôn các dòng trùng 
+    FROM RequestAccepted                                -- mỗi dòng là “người đi kết bạn”
+    UNION ALL                                           -- sẽ giữ lại luôn các dòng trùng 
     SELECT accepter_id AS id 
-    FROM RequestAccepted -- mỗi dòng là “người được chấp nhận kết bạn”.
-) AS bang_tam -- nhớ đặt tên cho bảng nhỏ này nếu không thì câu lệnh sẽ bị sai
+    FROM RequestAccepted                                -- mỗi dòng là “người được chấp nhận kết bạn”.
+) AS bang_tam                                           -- nhớ đặt tên cho bảng nhỏ này nếu không thì câu lệnh sẽ bị sai
 GROUP BY id
 ORDER BY num DESC
 LIMIT 1;
