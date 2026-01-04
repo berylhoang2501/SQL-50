@@ -581,4 +581,18 @@ FROM w
 WHERE visited_on >= (SELECT DATE_ADD(MIN(visited_on), INTERVAL 6 DAY) FROM daily)
 ORDER BY visited_on;
 ```
-
+### 602. Friend Requests II: Who Has the Most Friends
+```
+SELECT id, count(*) AS num
+FROM 
+(
+    SELECT requester_id AS id
+    FROM RequestAccepted -- mỗi dòng là “người đi kết bạn”
+    UNION ALL -- sẽ giữ lại luôn các dòng trùng 
+    SELECT accepter_id AS id 
+    FROM RequestAccepted -- mỗi dòng là “người được chấp nhận kết bạn”.
+) AS bang_tam -- nhớ đặt tên cho bảng nhỏ này nếu không thì câu lệnh sẽ bị sai
+GROUP BY id
+ORDER BY num DESC
+LIMIT 1;
+```
